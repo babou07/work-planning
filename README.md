@@ -93,3 +93,10 @@ curl -X PUT -H 'Content-Type: application/json' -H 'Accept-Language: application
 }'
 ```
 
+### Unit tests
+
+Feel free to run from project root folder
+
+```
+mvn test
+```
