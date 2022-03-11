@@ -1,13 +1,9 @@
 package com.api.workplanning.router;
 
-import static org.springframework.web.reactive.function.server.ServerResponse.ok;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.Errors;
@@ -49,7 +45,7 @@ public class CrudHandler {
 		return request.bodyToMono(Planning.class).flatMap(planning -> {
 			getLogger().info("post planning request with body : ");
 			validate(new UpdatePlanningValidator(), planning); // Fields validation
-			return ServerResponse.ok().body(Mono.just(repo.save(planning)), Planning.class);
+			return ServerResponse.ok().body(Mono.just(save(planning)), Planning.class);
 		});
 	}
 	
@@ -76,12 +72,13 @@ public class CrudHandler {
 		try {
 			return repo.save(planning);
 		} catch (org.springframework.dao.DuplicateKeyException e) {
+			getLogger().error(e.getMessage(),e);
 			// a duplicate may happen if a shift already exist in db for that specific worker and specific day
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "a shift already exists for worker " + planning.toString());
 		}
 	}
 	
-	protected Logger getLogger() {
+	private Logger getLogger() {
 		return LoggerFactory.getLogger(CrudHandler.class);
 	}
 }

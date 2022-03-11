@@ -36,22 +36,18 @@ public class PlanningValidator implements Validator {
 		if(!planning.getShift().getStart().plusMinutes(SHIFT_NB_MINUTES).equals(planning.getShift().getEnd())) {
 			errors.rejectValue("shift.end", "shift.end.time", "shift.end time should be 8 hours later than start time");
 		}
-		
-		int shiftHash = planning.generateShiftHash();
-		getLogger().info("**** {} ****", shiftHash);
-		planning.setShifHash(shiftHash);
 	}
 
 	protected void checkMandatoryFields(Object target, Errors errors) {
 		// all worker fields are mandatory
 		ValidationUtils.rejectIfEmpty(errors, "worker", "worker.empty", "worker field should be supplied");
-		ValidationUtils.rejectIfEmpty(errors, "worker.firstName", "worker.firstname.empty", "worker firstName is mandatoy");
-		ValidationUtils.rejectIfEmpty(errors, "worker.lastName", "worker.lastName.empty", "worker lastName is mandatoy");
+		ValidationUtils.rejectIfEmpty(errors, "worker.firstName", "worker.firstname.empty", "worker firstName is mandatory");
+		ValidationUtils.rejectIfEmpty(errors, "worker.lastName", "worker.lastName.empty", "worker lastName is mandatory");
 
 		// all shift fields are mandatory
 		ValidationUtils.rejectIfEmpty(errors, "shift", "shif.empty", "shift field should be supplied");
-		ValidationUtils.rejectIfEmpty(errors, "shift.start", "shift.start.empty", "shift start datetime is mandatoy");
-		ValidationUtils.rejectIfEmpty(errors, "shift.end", "shift.end.empty", "shift end time is mandatoy");
+		ValidationUtils.rejectIfEmpty(errors, "shift.start", "shift.start.empty", "shift start datetime is mandatory");
+		ValidationUtils.rejectIfEmpty(errors, "shift.end", "shift.end.empty", "shift end time is mandatory");
 	}
 
 	protected Logger getLogger() {
